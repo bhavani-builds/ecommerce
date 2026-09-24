@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+    <div style="display:flex; gap:2rem; flex-wrap:wrap;">
+        <div style="flex:1; min-width:250px;">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width:100%; border-radius:8px;">
+            {% endif %}
+        </div>
+        <div style="flex:1; min-width:250px;">
+            <h1>{{ product.name }}</h1>
+            <p class="price">${{ product.price }}</p>
+            <p>{{ product.description }}</p>
+            <p>{% if product.in_stock %}In stock ({{ product.stock }} available){% else %}Out of stock{% endif %}</p>
+
+            {% if product.in_stock %}
+                <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                    {% csrf_token %}
+                    {{ cart_product_form }}
+                    <button type="submit">Add to cart</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

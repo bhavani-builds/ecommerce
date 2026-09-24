@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Shop{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <a href="{% url 'store:product_list' %}" class="logo">My Shop</a>
+            <a href="{% url 'cart:cart_detail' %}" class="cart-link">
+                Cart
+                {% if cart|length > 0 %}
+                    ({{ cart|length }} item{{ cart|length|pluralize }}, ${{ cart.get_total_price }})
+                {% else %}
+                    (empty)
+                {% endif %}
+            </a>
+        </div>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; {% now "Y" %} My Shop</p>
+    </footer>
+</body>
+</html>

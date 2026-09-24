@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{% if category %}{{ category.name }}{% else %}All Products{% endif %}{% endblock %}
+
+{% block content %}
+    <div style="display:flex; gap:2rem;">
+        <aside style="min-width:150px;">
+            <h3>Categories</h3>
+            <ul style="list-style:none; padding:0;">
+                <li><a href="{% url 'store:product_list' %}">All</a></li>
+                {% for c in categories %}
+                    <li><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </aside>
+        <div style="flex:1;">
+            <h1>{% if category %}{{ category.name }}{% else %}All Products{% endif %}</h1>
+            <div class="product-grid">
+                {% for product in products %}
+                    <div class="product-card">
+                        <a href="{{ product.get_absolute_url }}">
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                            {% endif %}
+                            <h3>{{ product.name }}</h3>
+                        </a>
+                        <p class="price">${{ product.price }}</p>
+                    </div>
+                {% empty %}
+                    <p>No products yet — add some in the admin.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
